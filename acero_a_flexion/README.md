@@ -55,3 +55,12 @@ Las pruebas unitarias (Unit Tests en inglés) son indispensables en todo desarro
 La existencia de este código que prueba nuestro código es requisito necesario para todo proceso de refactoring, nuestra premisa es mejorar (modificar) el código sin introducir errores en el algoritmo.
 
 Yo no soy un experto en el algoritmo en cuestión, pero aún así puedo crear una batería de pruebas consiguiendo que se pase por cáda una de las ramas de decisión en cada caso. Un experto debería agregar los casos de prueba para las condiciones límites y asegurarse de modificar el algoritmo para que valores inchoerentes den una respuesta que parece válida cuando en realidad carece de lógica.
+
+### Refactoring 3 - Legibilidad del algoritmo
+La resolución del algoritmo sigue un relativamente largo diagrama de flujo que hace que al final la solución lleve muchas líneas. Por el momento veo problemas con eso: 1) dificulta la comprensión lectora y 2) puede que existan etapas que se repitan en otros algoritmos y por tanto terminemos con una duplicación del código.
+
+Puede que el punto 2 no sea evidente en este pequeño ejemplo, pero no está de más tener en cuenta que el copiar/pegar código nos dice que hay algo mal en nuestro diseño (salvo contadas excepciones).
+
+Las fórmulas se reemplazaron por funciones que describen su propósito hacen que no se necesiten comentarios para saber el resultado que devuelven. El código debe expresar por sí mismo el propósito y los comentarios deben dejarse para quellas condiciones o hipótesis no evidentes.
+
+Al principio realicé la extracción de codigo en funciones sobre el mismo archivo y luego las pasé a otro donde las mismas puedan ser reutilizadas para otros proyectos. Aunque no se si correspondía para todas las funciones, dejo a un revisor que me apunte cualquier corrección.
