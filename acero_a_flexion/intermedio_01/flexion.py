@@ -67,9 +67,9 @@ def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero,
         denominador = 0.9*fy/(gamma*fc*b)
         As = numerador/denominador
 
-        texto1 = "Acero a tracción = " + str(round(As*1e4,2)) + "[cm2]"
-        texto2 = "Acero a compresión = 0[cm2]"
-        texto3 = "Acero mínimo a tracción = " + str(round(AsMin*1e4,2)) + "[cm2]"
+        texto1 = f"Acero a tracción = { metro2_a_centimetro2(As) } [cm2]"
+        texto2 = f"Acero a compresión = 0 [cm2]"
+        texto3 = f"Acero mínimo a tracción = { metro2_a_centimetro2(AsMin) } [cm2]"
         texto4 = "La viga no necesita acero a compresión"
 
     else:
@@ -81,18 +81,18 @@ def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero,
         roY = gamma*fc/fy*beta1*eu/(eu - fy/Es)*dp/d + Asp*(b*d)
         ro = As/(b*d)
         if ro > roY:
-            texto1 = "Acero a tracción = " + str(round(As*1e4,2)) + "[cm2]"
-            texto2 = "Acero a compresión = " + str(round(Asp*1e4,2)) + "[cm2]"
-            texto3 = "Acero mínimo a tracción = " + str(round(AsMin*1e4,2)) + "[cm2]"
+            texto1 = f"Acero a tracción = { metro2_a_centimetro2(As) } [cm2]"
+            texto2 = f"Acero a compresión =  { metro2_a_centimetro2(Asp) } [cm2]"
+            texto3 = f"Acero mínimo a tracción = { metro2_a_centimetro2(AsMin) } [cm2]"
             texto4 = "La viga NECESITA acero a compresión. As' fluye"
         else:
             a = (As-Asp)*fy/(gamma*fc*b)
             c = a/beta1
             fsp = eu*Es*(c - dp)/c
             AsRev = Asp*fy/fsp
-            texto1 = "Acero a tracción = " + str(round(As*1e4,2)) + "[cm2]"
-            texto2 = "Acero a compresión = " + str(round(Asp*1e4,2)) + "[cm2]"
-            texto3 = "Acero mínimo a tracción = " + str(round(AsRev*1e4,2)) + "[cm2]"
+            texto1 = f"Acero a tracción = { metro2_a_centimetro2(As) } [cm2]"
+            texto2 = f"Acero a compresión = { metro2_a_centimetro2(Asp) } [cm2]"
+            texto3 = f"Acero mínimo a tracción = { metro2_a_centimetro2(AsRev) } [cm2]"
             texto4 = "La viga NECESITA acero a compresión. As' no fluye"
 
     # Resultados
@@ -100,6 +100,16 @@ def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero,
     print(texto2)
     print(texto3)
     print(texto4)
+
+def metro2_a_centimetro2(valor, digitos=2):
+    """
+    Convertir de metro cuadrado a centímetro cuadrado, redondeando decimales.
+
+    Parámetros:
+    valor: magnitud [m2]
+    digitos: cantidad de digitos decimales a mantener
+    """
+    return round(valor*1e4, digitos)
 
 
 if __name__ == "__main__":
