@@ -28,6 +28,9 @@ def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero,
         resistencia_compresion_concreto: la resistencia a compresión del concreto [MPa]
         resistencia_traccion_acero: la resistencia a tracción del acero [MPa]
         momento_maximo: momento máximo de diseño [MN-m]
+
+    Resultados:
+        str[4]: textos de mensaje al usuario sobre los resultados del cálculo
     """
 
     # Datos de entrada (dejaré los nombres de variable originales)
@@ -82,7 +85,7 @@ def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero,
         ro = As/(b*d)
         if ro > roY:
             texto1 = f"Acero a tracción = { metro2_a_centimetro2(As) } [cm2]"
-            texto2 = f"Acero a compresión =  { metro2_a_centimetro2(Asp) } [cm2]"
+            texto2 = f"Acero a compresión = { metro2_a_centimetro2(Asp) } [cm2]"
             texto3 = f"Acero mínimo a tracción = { metro2_a_centimetro2(AsMin) } [cm2]"
             texto4 = "La viga NECESITA acero a compresión. As' fluye"
         else:
@@ -96,10 +99,7 @@ def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero,
             texto4 = "La viga NECESITA acero a compresión. As' no fluye"
 
     # Resultados
-    print(texto1)
-    print(texto2)
-    print(texto3)
-    print(texto4)
+    return [texto1, texto2, texto3, texto4]
 
 def metro2_a_centimetro2(valor, digitos=2):
     """
@@ -114,5 +114,8 @@ def metro2_a_centimetro2(valor, digitos=2):
 
 if __name__ == "__main__":
     # Ejecutar un caso de ejemplo
-    calcular_seccion_acero_flexion(0.2, 0.4, 0.05, 20, 500, 120)
+    resultados = calcular_seccion_acero_flexion(0.2, 0.4, 0.05, 20, 500, 120)
+
+    for r in resultados:
+        print(r)
     

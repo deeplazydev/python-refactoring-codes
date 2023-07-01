@@ -48,3 +48,10 @@ Además es bueno aplicar una primera buena práctica sobre que la carga de un ar
 Ahora incluso es posible llamar `help("flexion")` en un intérprete Python que dará la información del módulo como de las funciones definidas dentro.
 
 Por último, los nombres de variables son crípticos y no siguen el estilo esperado en los códigos Python (u otro lenguaje). Sin embargo, después de reflexionar un poco, decidí que los mantendré hasta etapas de refactoring más avanzadas para que aquellos que ya están familiarizados con esos nombres (similares a los del diagrama de flujo) encuentren menos dificultades a la hora de seguir los cambios.
+
+### Refactoring 2 - Pruebas unitarias
+Las pruebas unitarias (Unit Tests en inglés) son indispensables en todo desarrollo de software. Nos permiten comprobar que los resultados de nuestros algoritmos son los que esperamos para las entradas dadas.
+
+La existencia de este código que prueba nuestro código es requisito necesario para todo proceso de refactoring, nuestra premisa es mejorar (modificar) el código sin introducir errores en el algoritmo.
+
+Yo no soy un experto en el algoritmo en cuestión, pero aún así puedo crear una batería de pruebas consiguiendo que se pase por cáda una de las ramas de decisión en cada caso. Un experto debería agregar los casos de prueba para las condiciones límites y asegurarse de modificar el algoritmo para que valores inchoerentes den una respuesta que parece válida cuando en realidad carece de lógica.
