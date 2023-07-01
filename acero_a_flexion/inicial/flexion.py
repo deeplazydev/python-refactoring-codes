@@ -60,7 +60,7 @@ else:
         AsRev = Asp*fy/fsp
         texto1 = "Acero a tracción = " + str(round(As*1e4,2)) + "[cm2]"
         texto2 = "Acero a compresión = " + str(round(Asp*1e4,2)) + "[cm2]"
-        texto3 = "Acero mínimo a tracción = " + str(round(AsMin*1e4,2)) + "[cm2]"
+        texto3 = "Acero mínimo a tracción = " + str(round(AsRev*1e4,2)) + "[cm2]"
         texto4 = "La viga NECESITA acero a compresión. As' no fluye"
 
 print(texto1)
