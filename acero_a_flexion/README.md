@@ -36,3 +36,15 @@ Como el propósito de este trabajo es educativo, habrá decisiones donde impleme
 
 Cada etapa tendrá un commit inicial con la versión de la etapa precedente y otro con los cambios aplicados. De esta manera será más facil ver el historial de cambios sobre un archivo en una etapa en particular, e incluso un simple analisis de diferencias por medio de la inspección entre los archivos de distintas etapas puede hacerse por alguien que no domine GIT.
 
+### Refactoring 1 - Legibilidad
+Agregar información sobre el autor, referencia hacia la publicación original y el propósito del código.
+
+Debería haber una licencia, el autor original no la estableció y en este caso la licencia ya está definida a nivel global del repositorio. Agregaré una en la versión final.
+
+Clarificar los datos de entrada que el usuario debe proveer a través de los parametros de una función que englobe el algoritmo.
+
+Además es bueno aplicar una primera buena práctica sobre que la carga de un archivo Python tenga una forma diferente de ejecutarse cuando se lo llama directamente como script o se lo carga como módulo desde otro archivo.
+
+Ahora incluso es posible llamar `help("flexion")` en un intérprete Python que dará la información del módulo como de las funciones definidas dentro.
+
+Por último, los nombres de variables son crípticos y no siguen el estilo esperado en los códigos Python (u otro lenguaje). Sin embargo, después de reflexionar un poco, decidí que los mantendré hasta etapas de refactoring más avanzadas para que aquellos que ya están familiarizados con esos nombres (similares a los del diagrama de flujo) encuentren menos dificultades a la hora de seguir los cambios.
