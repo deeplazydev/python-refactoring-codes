@@ -18,6 +18,11 @@ __maintainer__ = "Deep Lazy Dev"
 __email__ = "deeplazydev@gmail.com"
 __status__ = "Development"
 
+
+from norma_ACI318_14_funciones import *
+from unidades import metro2_a_centimetro2
+
+
 def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero, resistencia_compresion_concreto, resistencia_traccion_acero, momento_maximo):
     """Cálculo de la sección de acero a flexión para un diseño estructural de una viga
 
@@ -49,26 +54,16 @@ def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero,
     eu = 0.003
     Es = 200e3
 
-    if fc <= 28:
-        beta1 = 0.85
-    elif fc >= 55:
-        beta1 = 0.65
-    else:
-        beta1 = 0.85 - 0.05*(fc - 28)/7
+    beta1 = calcular_beta1(fc)
 
-    roMax = gamma*beta1*fc/fy*eu/(eu + 0.005)
-    AsMax = roMax*b*d
-    fiMmax = 0.9*AsMax*fy*(d - AsMax*fy/(2*gamma*fc*b))
+    roMax = calcular_ro_maximo(gamma, beta1, fc, fy, eu)
+    AsMax = calcular_area_maxima_acero(roMax, b, d)
+    fiMmax = calcular_momento_maximo_resistente(AsMax, fc, fy, gamma, b, d)
 
-    AsMin1 = fc**0.5/(4*fy)*b*d
-    AsMin2 = 1.4*b*d/fy
-
-    AsMin = max(AsMin1, AsMin2)
+    AsMin = calcular_area_minima_acero(fc, fy, b, d)
 
     if Mu < fiMmax:
-        numerador = 0.9*d - (0.81*d**2 - 1.8*Mu/(gamma*fc*b))**0.5
-        denominador = 0.9*fy/(gamma*fc*b)
-        As = numerador/denominador
+        As = calcular_area_acero_traccion(Mu, fc, fy, gamma, b, d)
 
         texto1 = f"Acero a tracción = { metro2_a_centimetro2(As) } [cm2]"
         texto2 = f"Acero a compresión = 0 [cm2]"
@@ -77,22 +72,21 @@ def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero,
 
     else:
         M2 = (Mu - fiMmax)/0.9
-        As2 = M2/(fy*(d - dp))
+        As2 = calcular_area_acero_adicional(M2, fy, d, dp)
         As = AsMax + As2
         Asp = As2
 
-        roY = gamma*fc/fy*beta1*eu/(eu - fy/Es)*dp/d + Asp*(b*d)
-        ro = As/(b*d)
+        roY = calcular_cuantia_minima_acero_traccion_para_acero_compresion_fluya(Asp, fy, gamma, fc, b, d, dp, beta1, eu, Es)
+        ro = calcular_cuantia_real_acero(As, b, d)
+
         if ro > roY:
             texto1 = f"Acero a tracción = { metro2_a_centimetro2(As) } [cm2]"
             texto2 = f"Acero a compresión = { metro2_a_centimetro2(Asp) } [cm2]"
             texto3 = f"Acero mínimo a tracción = { metro2_a_centimetro2(AsMin) } [cm2]"
             texto4 = "La viga NECESITA acero a compresión. As' fluye"
         else:
-            a = (As-Asp)*fy/(gamma*fc*b)
-            c = a/beta1
-            fsp = eu*Es*(c - dp)/c
-            AsRev = Asp*fy/fsp
+            AsRev = calcular_area_acero_revisado(As, Asp, fc, fy, gamma, beta1, b, dp, eu, Es)
+
             texto1 = f"Acero a tracción = { metro2_a_centimetro2(As) } [cm2]"
             texto2 = f"Acero a compresión = { metro2_a_centimetro2(Asp) } [cm2]"
             texto3 = f"Acero mínimo a tracción = { metro2_a_centimetro2(AsRev) } [cm2]"
@@ -100,16 +94,6 @@ def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero,
 
     # Resultados
     return [texto1, texto2, texto3, texto4]
-
-def metro2_a_centimetro2(valor, digitos=2):
-    """
-    Convertir de metro cuadrado a centímetro cuadrado, redondeando decimales.
-
-    Parámetros:
-    valor: magnitud [m2]
-    digitos: cantidad de digitos decimales a mantener
-    """
-    return round(valor*1e4, digitos)
 
 
 if __name__ == "__main__":
