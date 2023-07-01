@@ -1,4 +1,4 @@
-# Acero por flexión
+# Acero a flexión
 El proyecto original trata del *"Diseño a flexión según la norma ACI 318-14"* [1].
 
 El objetivo es transcribir los códigos originales y plantear otras soluciones más profesionales que sean legibles, modulares, sin redundancias, testeables y preparadas para los cambios futuros.
