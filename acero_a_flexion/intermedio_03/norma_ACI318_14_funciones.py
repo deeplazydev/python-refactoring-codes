@@ -53,6 +53,12 @@ def calcular_area_acero_traccion(momento_maximo, resistencia_compresion_concreto
     denominador = 0.9 * resistencia_traccion_acero / (gamma_fc_b)    
     return numerador / denominador
 
+def calcular_momento_adicional(momento_maximo, momento_maximo_resistente):
+    """
+    Calcular el momento adicional
+    """
+    return (momento_maximo - momento_maximo_resistente)/0.9
+
 def calcular_area_acero_adicional(momento_adicional, resistencia_traccion_acero, profundidad_efectiva, profundidad_acero):
     """
     Calcular acero adicional (As2) más allá del máximo momento resistente

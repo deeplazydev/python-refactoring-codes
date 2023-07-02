@@ -71,7 +71,7 @@ def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero,
         texto4 = "La viga no necesita acero a compresión"
 
     else:
-        M2 = (Mu - fiMmax)/0.9
+        M2 = calcular_momento_adicional(Mu, fiMmax)
         As2 = calcular_area_acero_adicional(M2, fy, d, dp)
         As = AsMax + As2
         Asp = As2
