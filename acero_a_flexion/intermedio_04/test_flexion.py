@@ -8,29 +8,31 @@ el estudio del algoritmo y eso escapa al propósito de este refactoring,
 se lo dejo al interesado.
 """
 
-from flexion import calcular_seccion_acero_flexion
+from flexion import calcular_seccion_acero_flexion, crear_mensajes_al_usuario
 
 def test_calcular_flexion_no_necesita_acero() -> None:
-    res = calcular_seccion_acero_flexion(0.2, 0.4, 0.05, 20, 500, 70)
+    resultados = calcular_seccion_acero_flexion(0.2, 0.4, 0.05, 20, 500, 70)
 
+    res = crear_mensajes_al_usuario(*resultados)
     assert res[0] == "Acero a tracción = 4.96 [cm2]"
-    assert res[1] == "Acero a compresión = 0 [cm2]"
+    assert res[1] == "Acero a compresión = 0.00 [cm2]"
     assert res[2] == "Acero mínimo a tracción = 1.96 [cm2]"
     assert res[3] == "La viga no necesita acero a compresión"
 
 def test_calcular_flexion_necesita_acero_no_fluye() -> None:
-    res = calcular_seccion_acero_flexion(0.2, 0.4, 0.05, 20, 500, 120)
+    resultados = calcular_seccion_acero_flexion(0.2, 0.4, 0.05, 20, 500, 120)
 
+    res = crear_mensajes_al_usuario(*resultados)
     assert res[0] == "Acero a tracción = 9.04 [cm2]"
     assert res[1] == "Acero a compresión = 1.45 [cm2]"
     assert res[2] == "Acero mínimo a tracción = 1.95 [cm2]"
-    assert res[3] == "La viga NECESITA acero a compresión. As' no fluye"
+    assert res[3] == "La viga NECESITA acero a compresión -> As' no fluye"
 
 def test_calcular_flexion_necesita_acero_fluye() -> None:
-    res = calcular_seccion_acero_flexion(0.3, 0.6, 0.05, 30, 410, 600)
+    resultados = calcular_seccion_acero_flexion(0.3, 0.6, 0.05, 30, 410, 600)
 
+    res = crear_mensajes_al_usuario(*resultados)
     assert res[0] == "Acero a tracción = 34.85 [cm2]"
     assert res[1] == "Acero a compresión = 2.69 [cm2]"
     assert res[2] == "Acero mínimo a tracción = 5.63 [cm2]"
-    assert res[3] == "La viga NECESITA acero a compresión. As' fluye"
-
+    assert res[3] == "La viga NECESITA acero a compresión -> As' fluye"

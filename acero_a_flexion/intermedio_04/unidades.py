@@ -4,13 +4,12 @@
 """Colección de funciones relacionadas a las unidades físicas
 """
 
-def metro2_a_centimetro2(valor, digitos=2):
+def metro2_a_centimetro2(valor) -> float: 
     """
-    Convertir de metro cuadrado a centímetro cuadrado, redondeando decimales.
+    Convertir de metro cuadrado a centímetro cuadrado
 
     Parámetros:
-    valor: magnitud [m2]
-    digitos: cantidad de digitos decimales a mantener
+        valor: magnitud [m2]
     """
-    return round(valor*1e4, digitos)
+    return valor*1e4
 

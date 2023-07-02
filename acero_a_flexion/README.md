@@ -64,3 +64,13 @@ Puede que el punto 2 no sea evidente en este pequeño ejemplo, pero no está de 
 Las fórmulas se reemplazaron por funciones que describen su propósito hacen que no se necesiten comentarios para saber el resultado que devuelven. El código debe expresar por sí mismo el propósito y los comentarios deben dejarse para quellas condiciones o hipótesis no evidentes.
 
 Al principio realicé la extracción de codigo en funciones sobre el mismo archivo y luego las pasé a otro donde las mismas puedan ser reutilizadas para otros proyectos. Aunque no se si correspondía para todas las funciones, dejo a un revisor que me apunte cualquier corrección.
+
+### Refactoring 4 - Separación entre datos calculados y la presentación de resultados
+En el refactoring 2 agregué las pruebas unitarias que se basan en que la respuesta del algoritmo son textos.
+Esto en general no es lo adecuado.
+
+Imaginemos que queremos hacer un algoritmo de optimización que a través de pequeñas variaciones en los datos de entrada evalúe si cumplimos o no con los criterios esperados. Ello sólo se puede hacer si contamos con los valores numéricos reales y no con las versiones *redondeadas* de ellos.
+
+Ahora el algoritmo retorna los 3 valores numéricos en las unidades numéricas en las que opera y la conclusión está codificada en una enumeración clara, no ambigua, no sujeta a cómo se quiera presentar al usuario.
+
+La presentación de los resultados se realiza ahora por medio de una función independiente.

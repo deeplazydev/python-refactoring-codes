@@ -19,8 +19,15 @@ __email__ = "deeplazydev@gmail.com"
 __status__ = "Development"
 
 
+from enum import Enum
 from norma_ACI318_14_funciones import *
 from unidades import metro2_a_centimetro2
+
+
+class VigaConcretoAceroFlexionResultado(Enum):
+    NO_NECESITA_ACERO = 1
+    NECESITA_ACERO_FLUYE = 2
+    NECESITA_ACERO_NO_FLUYE = 3
 
 
 def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero, resistencia_compresion_concreto, resistencia_traccion_acero, momento_maximo):
@@ -64,12 +71,7 @@ def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero,
 
     if Mu < fiMmax:
         As = calcular_area_acero_traccion(Mu, fc, fy, gamma, b, d)
-
-        texto1 = f"Acero a tracción = { metro2_a_centimetro2(As) } [cm2]"
-        texto2 = f"Acero a compresión = 0 [cm2]"
-        texto3 = f"Acero mínimo a tracción = { metro2_a_centimetro2(AsMin) } [cm2]"
-        texto4 = "La viga no necesita acero a compresión"
-
+        return [As, 0.0, AsMin, VigaConcretoAceroFlexionResultado.NO_NECESITA_ACERO]
     else:
         M2 = calcular_momento_adicional(Mu, fiMmax)
         As2 = calcular_area_acero_adicional(M2, fy, d, dp)
@@ -80,26 +82,38 @@ def calcular_seccion_acero_flexion(ancho_viga, altura_viga, recubrimiento_acero,
         ro = calcular_cuantia_real_acero(As, b, d)
 
         if ro > roY:
-            texto1 = f"Acero a tracción = { metro2_a_centimetro2(As) } [cm2]"
-            texto2 = f"Acero a compresión = { metro2_a_centimetro2(Asp) } [cm2]"
-            texto3 = f"Acero mínimo a tracción = { metro2_a_centimetro2(AsMin) } [cm2]"
-            texto4 = "La viga NECESITA acero a compresión. As' fluye"
+            return [As, Asp, AsMin, VigaConcretoAceroFlexionResultado.NECESITA_ACERO_FLUYE]
         else:
             AsRev = calcular_area_acero_revisado(As, Asp, fc, fy, gamma, beta1, b, dp, eu, Es)
+            return [As, Asp, AsRev, VigaConcretoAceroFlexionResultado.NECESITA_ACERO_NO_FLUYE]
 
-            texto1 = f"Acero a tracción = { metro2_a_centimetro2(As) } [cm2]"
-            texto2 = f"Acero a compresión = { metro2_a_centimetro2(Asp) } [cm2]"
-            texto3 = f"Acero mínimo a tracción = { metro2_a_centimetro2(AsRev) } [cm2]"
-            texto4 = "La viga NECESITA acero a compresión. As' no fluye"
 
-    # Resultados
-    return [texto1, texto2, texto3, texto4]
+def crear_mensajes_al_usuario(acero_traccion, acero_compresion, acero_minimo_traccion, resultado):
+    """
+    Compaginar los valores resultantes del algoritmo de flexión en textos descriptivos
+    """
+    return ["Acero a tracción = {:.2f} [cm2]".format(metro2_a_centimetro2(acero_traccion)),
+            "Acero a compresión = {:.2f} [cm2]".format(metro2_a_centimetro2(acero_compresion)),
+            "Acero mínimo a tracción = {:.2f} [cm2]".format(metro2_a_centimetro2(acero_minimo_traccion)),
+            create_mensaje_resultado(resultado)]
+
+
+def create_mensaje_resultado(valor: VigaConcretoAceroFlexionResultado):
+    match valor:
+        case VigaConcretoAceroFlexionResultado.NO_NECESITA_ACERO:
+            return "La viga no necesita acero a compresión"
+        case VigaConcretoAceroFlexionResultado.NECESITA_ACERO_FLUYE:
+            return "La viga NECESITA acero a compresión -> As' fluye"
+        case VigaConcretoAceroFlexionResultado.NECESITA_ACERO_NO_FLUYE:
+            return "La viga NECESITA acero a compresión -> As' no fluye"
+        case default:
+            return "Resultado no esperado: " + str(valor)
 
 
 if __name__ == "__main__":
     # Ejecutar un caso de ejemplo
     resultados = calcular_seccion_acero_flexion(0.2, 0.4, 0.05, 20, 500, 120)
 
-    for r in resultados:
+    for r in crear_mensajes_al_usuario(*resultados):
         print(r)
     
