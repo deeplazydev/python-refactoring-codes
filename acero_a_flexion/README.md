@@ -74,3 +74,10 @@ Imaginemos que queremos hacer un algoritmo de optimización que a través de peq
 Ahora el algoritmo retorna los 3 valores numéricos en las unidades numéricas en las que opera y la conclusión está codificada en una enumeración clara, no ambigua, no sujeta a cómo se quiera presentar al usuario.
 
 La presentación de los resultados se realiza ahora por medio de una función independiente.
+
+### Refactoring 5 - Evitar duplicación de código en la Interfaz Gráfica de Usuario (GUI)
+Se importa en algoritmo definido en `flexion.py` y se utiliza la función correspondiente para convertir los resultados numéricos en las descripciones textuales. Ya no se deben mantener los dos algoritmos en paralelo.
+
+Otra pequeña mejora es centralizar la creación de componentes gráficos en funciones. Esto mejora la legibilidad de la construcción de la interfaz y permite que cualquier cambio en una misma sección de la interfaz (entradas o resultados) sea automaticamente aplicado a todos los elementos.
+
+Esta separación tiene un gran impacto, sólo debemos preocuparnos en pasar los valores correctos entre interfaz y algoritmo, que la lógica está separada y verificada por las pruebas unitarias.
