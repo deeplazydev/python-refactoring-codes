@@ -76,8 +76,8 @@ Ahora el algoritmo retorna los 3 valores numéricos en las unidades numéricas e
 La presentación de los resultados se realiza ahora por medio de una función independiente.
 
 ### Refactoring 5 - Evitar duplicación de código en la Interfaz Gráfica de Usuario (GUI)
-Se importa en algoritmo definido en `flexion.py` y se utiliza la función correspondiente para convertir los resultados numéricos en las descripciones textuales. Ya no se deben mantener los dos algoritmos en paralelo.
+En esta etapa se importa el algoritmo definido en `flexion.py` y se utiliza la función correspondiente para convertir los resultados numéricos en las descripciones textuales. Ya no se deben mantener los dos algoritmos en paralelo.
 
-Otra pequeña mejora es centralizar la creación de componentes gráficos en funciones. Esto mejora la legibilidad de la construcción de la interfaz y permite que cualquier cambio en una misma sección de la interfaz (entradas o resultados) sea automaticamente aplicado a todos los elementos.
+Otra pequeña mejora fue centralizar la creación de componentes gráficos en funciones. Esto mejora la legibilidad de la construcción de la interfaz y permite que cualquier cambio en una misma categoría de la interfaz (entradas o resultados) sea automaticamente aplicado a todos los elementos del mismo tipo.
 
 Esta separación tiene un gran impacto, sólo debemos preocuparnos en pasar los valores correctos entre interfaz y algoritmo, que la lógica está separada y verificada por las pruebas unitarias.
